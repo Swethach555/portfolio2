@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swetha Satya Sri | Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0a0808',
+            card: 'rgba(45, 27, 51, 0.92)',
+            accent: '#64d2ff',
+            muted: '#a89faf',
+            border: 'rgba(255,255,255,0.15)',
+            highlight: '#c9a0dc'
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #0a0808;
+      --card: rgba(45, 27, 51, 0.92);
+      --accent: #64d2ff;
+      --muted: #a89faf;
+      --highlight: #c9a0dc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: auto; } /* Instant scroll */
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: #f5f0f5;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Floral Background */
+    .floral-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: 
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139, 69, 95, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 50% at 80% 20%, rgba(180, 100, 130, 0.35) 0%, transparent 45%),
+        radial-gradient(ellipse 60% 40% at 75% 75%, rgba(120, 60, 90, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 35% at 25% 85%, rgba(160, 80, 110, 0.25) 0%, transparent 45%),
+        linear-gradient(180deg, #0a0808 0%, #0d0a0b 50%, #0a0808 100%);
+    }
+
+    /* Petals */
+    .petal {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(ellipse at 30% 30%, rgba(220, 150, 170, 0.6), rgba(180, 100, 130, 0.3));
+      border-radius: 50% 0 50% 50%;
+      pointer-events: none;
+      z-index: -1;
+      animation: float-petal linear infinite;
+    }
+
+    @keyframes float-petal {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Content Card */
+    .content-card {
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: 1px solid rgba(200, 170, 200, 0.15);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* Hero Frame */
+    .hero-frame {
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      position: relative;
+      border-radius: 60px 0 60px 0;
+    }
+    .hero-frame::before, .hero-frame::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .hero-frame::before { top: -20px; left: -20px; border-right: none; border-bottom: none; border-radius: 20px 0 0 0; }
+    .hero-frame::after { bottom: -20px; right: -20px; border-left: none; border-top: none; border-radius: 0 0 20px 0; }
+
+    /* Slide System - INSTANT SWITCH & COMPACT */
+    .view-section {
+      display: none; /* Hidden by default */
+      opacity: 0;
+    }
+    .view-section.active {
+      display: flex;
+      opacity: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      /* Compact spacing instead of full screen height */
+      padding-top: 6rem; 
+      padding-bottom: 4rem;
+    }
+    
+    /* Specific override for Landing Page to keep it centered vertically */
+    #view-home.active {
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Education Item */
+    .edu-item {
+      border-left: 3px solid #9f7aea;
+      padding-left: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .edu-item:hover { border-left-color: var(--accent); transform: translateX(8px); }
+
+    /* Progress Bar */
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      height: 10px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4fc3f7, #64d2ff);
+      border-radius: 999px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Nav Links */
+    .nav-link { position: relative; transition: color 0.3s ease; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* Buttons */
+    .btn-primary {
+      background: #f5f0f5;
+      color: #1a1a1a;
+      padding: 0.75rem 1.5rem; /* Slightly smaller padding */
+      border-radius: 999px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(100, 210, 255, 0.3);
+    }
+
+    .click-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+    .click-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateX(5px);
+    }
+
+    .contact-link { color: var(--muted); transition: all 0.3s ease; text-decoration: none; }
+    .contact-link:hover { color: var(--accent); }
+
+    .section-icon {
+      width: 50px; height: 50px; /* Smaller icon */
+      background: rgba(159, 122, 234, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .ornament {
+      width: 100px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.open { transform: translateX(0); }
+
+    /* Focus & Reduced Motion */
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .petal { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floral Background -->
+  <div class="floral-bg"></div>
+  <div id="petals-container"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/40 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-center h-16">
+        
+        <!-- Desktop Nav -->
+        <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
+          <li><span class="nav-link text-white/80 hover:text-white cursor-pointer" data-target="home">Home</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white cursor-pointer" data-target="about">About</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white cursor-pointer" data-target="education">Education</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white cursor-pointer" data-target="skills">Skills</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white cursor-pointer" data-target="contact">Contact</span></li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="md:hidden p-2 text-white absolute right-6" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed inset-y-0 right-0 w-64 bg-black/95 backdrop-blur-xl md:hidden">
+      <div class="p-6 pt-20">
+        <ul class="space-y-6 text-lg">
+          <li><span class="nav-link text-white/80 hover:text-white block cursor-pointer" data-target="home">Home</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white block cursor-pointer" data-target="about">About</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white block cursor-pointer" data-target="education">Education</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white block cursor-pointer" data-target="skills">Skills</span></li>
+          <li><span class="nav-link text-white/80 hover:text-white block cursor-pointer" data-target="contact">Contact</span></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container for all views -->
+  <main class="min-h-screen pt-16">
+    
+    <!-- VIEW 1: LANDING (HOME) -->
+    <section id="view-home" class="view-section active min-h-screen flex items-center justify-center px-6 py-20">
+      <div class="w-full max-w-xl relative">
+        <div class="hero-frame px-10 py-20 text-center">
+          <p class="text-sm tracking-[0.3em] text-white/50 mb-6 uppercase">Portfolio</p>
+          <h1 class="font-display text-5xl md:text-6xl font-semibold leading-tight mb-8">
+            Welcome to<br>my portfolio
+          </h1>
+          <div class="flex items-center justify-center gap-4 mb-8">
+            <div class="ornament"></div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-white/40">
+              <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" fill="currentColor"/>
+            </svg>
+            <div class="ornament"></div>
+          </div>
+          <p class="text-xl font-light tracking-wide text-white/80 mb-10">Swetha Satya Sri</p>
+          
+          <!-- Click Here Button goes to Intro -->
+          <button id="enter-btn" class="click-btn" data-target="intro">
+            <span>Click Here</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: INTRO (Hi I'm Swetha) - Centered & Compact (Text Removed) -->
+    <section id="view-intro" class="view-section px-6">
+      <div class="content-card p-8 md:p-10 max-w-3xl w-full text-center">
+        <h2 class="font-display text-4xl md:text-5xl font-semibold mb-8">Hi, I'm Swetha</h2>
+        <!-- Long text removed as requested -->
+        <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center">
+          <button class="btn-primary text-sm slide-btn" data-target="about">About Me</button>
+          <button class="btn-primary text-sm slide-btn" data-target="education">My Education</button>
+          <button class="btn-primary text-sm slide-btn" data-target="skills">View My Skills</button>
+          <button class="btn-primary text-sm slide-btn" data-target="contact">Contact Me</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: ABOUT -->
+    <section id="view-about" class="view-section px-6">
+      <div class="content-card p-8 md:p-10 max-w-3xl w-full">
+        <div class="section-icon mx-auto mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-6 text-center">About Me</h2>
+        <div class="space-y-4 text-white/75 leading-relaxed md:text-lg">
+          <p>My name is <strong class="text-white">Swetha Satya Sri Chintapalli</strong>. I am currently pursuing B.Sc (Computers) at Aditya Degree College, Amalapuram. I am interested in web development and programming.</p>
+          <p>I am a quick learner with good communication and teamwork skills. My goal is to start my career as a software professional.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: EDUCATION -->
+    <section id="view-education" class="view-section px-6">
+      <div class="content-card p-8 md:p-10 max-w-3xl w-full">
+        <div class="section-icon mx-auto mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">My Education</h2>
+        <div class="space-y-8">
+          <div class="edu-item">
+            <h3 class="text-lg font-semibold text-white mb-1">Bachelor of Science in Computer Science</h3>
+            <p class="text-white/50 text-sm mb-1">Aditya Degree College, Amalapuram <span class="ml-2">| 2023 - 2026</span></p>
+            <p class="text-[#fbbf24] font-medium text-sm">CGPA: 7.7/10</p>
+          </div>
+          <div class="edu-item">
+            <h3 class="text-lg font-semibold text-white mb-1">Intermediate</h3>
+            <p class="text-white/50 text-sm mb-1">Srichaitanya Junior College, Amalapuram <span class="ml-2">| 2021 - 2023</span></p>
+            <p class="text-[#fbbf24] font-medium text-sm">Percentage: 53.1%</p>
+          </div>
+          <div class="edu-item">
+            <h3 class="text-lg font-semibold text-white mb-1">Schooling</h3>
+            <p class="text-white/50 text-sm mb-1">Geetam Public School, Amalapuram <span class="ml-2">| 2019 - 2020</span></p>
+            <p class="text-[#fbbf24] font-medium text-sm">Score: 534/1000</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: SKILLS -->
+    <section id="view-skills" class="view-section px-6">
+      <div class="content-card p-8 md:p-10 max-w-3xl w-full">
+        <div class="section-icon mx-auto mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">Technical Skills</h2>
+        <div class="space-y-6">
+          <div class="skill-item">
+            <div class="flex justify-between mb-2"><span class="font-medium text-white/90 text-sm">HTML</span><span class="text-white/50 text-xs">90%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="90"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="flex justify-between mb-2"><span class="font-medium text-white/90 text-sm">CSS</span><span class="text-white/50 text-xs">80%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="flex justify-between mb-2"><span class="font-medium text-white/90 text-sm">JavaScript</span><span class="text-white/50 text-xs">60%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="60"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="flex justify-between mb-2"><span class="font-medium text-white/90 text-sm">Python</span><span class="text-white/50 text-xs">50%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="50"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: CONTACT -->
+    <section id="view-contact" class="view-section px-6">
+      <div class="content-card p-8 md:p-10 max-w-3xl w-full">
+        <div class="section-icon mx-auto mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="1.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">Contact Me</h2>
+        <div class="space-y-3 text-base">
+          <p><span class="font-semibold text-white/90">Name:</span> <span class="text-white/70">Swetha Satya Sri Chintapalli</span></p>
+          <p><span class="font-semibold text-white/90">Email:</span> <a href="mailto:swethachintapalli940@gmail.com" class="contact-link">swethachintapalli940@gmail.com</a></p>
+          <p><span class="font-semibold text-white/90">Phone:</span> <span class="text-white/70">+91 9XXXXXXXXX</span></p>
+          <p><span class="font-semibold text-white/90">Location:</span> <span class="text-white/70">Andhra Pradesh, India</span></p>
+          <p><span class="font-semibold text-white/90">LinkedIn:</span> <a href="https://linkedin.com/in/swetha-satya-sri-chintapalli-818ba9370" class="contact-link" target="_blank">linkedin.com/in/swetha-satya-sri-chintapalli-818ba9370</a></p>
+          <p><span class="font-semibold text-white/90">GitHub:</span> <a href="https://github.com/Swethach555/swetha-chintapalli" class="contact-link" target="_blank">github.com/Swethach555/swetha-chintapalli</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="main-footer" class="fixed bottom-0 left-0 right-0 z-40 border-t border-white/5 py-3 text-center bg-black/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500">
+    <p class="text-white/40 text-xs">© 2026 Swetha. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Petals
+    const petalsContainer = document.getElementById('petals-container');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (!prefersReducedMotion) {
+      for (let i = 0; i < 15; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        petal.style.animationDelay = (Math.random() * 10) + 's';
+        petalsContainer.appendChild(petal);
+      }
+    }
+
+    // Navigation Logic
+    const navLinks = document.querySelectorAll('.nav-link[data-target]');
+    const enterBtn = document.getElementById('enter-btn');
+    const slideBtns = document.querySelectorAll('.slide-btn');
+    const footer = document.getElementById('main-footer');
+    const views = document.querySelectorAll('.view-section');
+
+    function switchView(targetId) {
+      // Hide all views
+      views.forEach(v => v.classList.remove('active'));
+
+      // Show target view
+      let targetView = document.getElementById('view-' + targetId);
+      
+      if (targetView) {
+        targetView.classList.add('active');
+        
+        // Show footer if not home/intro
+        if (targetId === 'home' || targetId === 'intro') {
+          footer.style.opacity = '0';
+          footer.style.pointerEvents = 'none';
+        } else {
+          footer.style.opacity = '1';
+          footer.style.pointerEvents = 'auto';
+        }
+
+        // Update Nav Active State
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.dataset.target === targetId) {
+            link.classList.add('active');
+          }
+        });
+
+        // Animate Progress Bars if Skills
+        if (targetId === 'skills') {
+          requestAnimationFrame(() => {
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+              bar.style.width = bar.dataset.width + '%';
+            });
+          });
+        } else {
+          document.querySelectorAll('.progress-fill').forEach(bar => {
+            bar.style.width = '0%';
+          });
+        }
+
+        // Instant scroll
+        window.scrollTo(0, 0);
+      }
+    }
+
+    // Event Listeners
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        switchView(link.dataset.target);
+        document.getElementById('mobile-menu').classList.remove('open');
+      });
+    });
+
+    enterBtn.addEventListener('click', () => {
+      switchView('intro');
+    });
+
+    slideBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchView(btn.dataset.target);
+      });
+    });
+
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    });
+
+    if (!prefersReducedMotion) {
+      window.addEventListener('scroll', () => {
+        document.querySelector('.floral-bg').style.transform = 'translateY(' + (window.scrollY * 0.3) + 'px)';
+      });
+    }
+  </script>
+</body>
+</html>
